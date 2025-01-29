@@ -3,7 +3,11 @@ package com.StudentManagement.management.controller;
 import com.StudentManagement.management.customExceptions.CustomStudentNotFound;
 import com.StudentManagement.management.entities.MySQLstudentsRelated.StudentDetails;
 import com.StudentManagement.management.entities.MySQLstudentsRelated.Students;
+import com.StudentManagement.management.jwtconfiguration.JwtUtils;
+import com.StudentManagement.management.services.UserOperationService;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.client.RestTemplate;
 import com.StudentManagement.management.services.StudentManagmentService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
+import com.StudentManagement.management.entities.User;
 
 
 
@@ -29,6 +33,8 @@ public class StudentApi {
 
     private Logger log= LoggerFactory.getLogger(StudentApi.class);
 
+    @Autowired
+    private AuthenticationManager authenticationManager
 //    @Value("${spring.datasource.username}")
 //    private String user;
 //
@@ -36,7 +42,10 @@ public class StudentApi {
     private RestTemplate restTemplate;
 //    private RestTemplate restTemplate = new RestTemplate();
 
-
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private UserOperationService userOperationService;
 
 //    ------------- Get Methods -------------------
 
@@ -94,6 +103,26 @@ public class StudentApi {
     public List<StudentDetails> getStudentsDetailsByRollNumber(@PathVariable int rollNumber){
         return studentManagmentService.getStudentsDetailsByRollNumber(rollNumber);
     }
+
+
+    //Signup user
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody User user){
+        String res=userOperationService.save(user);
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/login")
+    public void login(@RequestBody User user){
+        try{
+            AuthenticationManager authenticate = (AuthenticationManager) authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getName(),user.getPassword()));
+        }catch (Exception ignored){
+
+        }
+    }
+
+
 
 
 }
