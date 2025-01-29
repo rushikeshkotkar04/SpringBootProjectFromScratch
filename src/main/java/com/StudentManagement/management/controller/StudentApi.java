@@ -33,8 +33,8 @@ public class StudentApi {
 
     private Logger log= LoggerFactory.getLogger(StudentApi.class);
 
-    @Autowired
-    private AuthenticationManager authenticationManager
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 //    @Value("${spring.datasource.username}")
 //    private String user;
 //
@@ -42,8 +42,8 @@ public class StudentApi {
     private RestTemplate restTemplate;
 //    private RestTemplate restTemplate = new RestTemplate();
 
-    @Autowired
-    private JwtUtils jwtUtils;
+//    @Autowired
+//    private JwtUtils jwtUtils;
     @Autowired
     private UserOperationService userOperationService;
 
@@ -112,15 +112,15 @@ public class StudentApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/login")
-    public void login(@RequestBody User user){
-        try{
-            AuthenticationManager authenticate = (AuthenticationManager) authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getName(),user.getPassword()));
-        }catch (Exception ignored){
-
-        }
-    }
+//    @PostMapping("/login")
+//    public void login(@RequestBody User user){
+//        try{
+//            AuthenticationManager authenticate = (AuthenticationManager) authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(user.getName(),user.getPassword()));
+//        }catch (Exception ignored){
+//
+//        }
+//    }
 
 
 
